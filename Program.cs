@@ -34,6 +34,7 @@ namespace Selenium
                         ".//div[@class='HH-Resume-UpdateTimer-ToUpdate-Container' and text()='Обновить можно через ']"))
                     .Displayed)
             {
+                driver.Close();
                 return -1;
             }
 
