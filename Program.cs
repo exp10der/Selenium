@@ -6,6 +6,8 @@ namespace Selenium
 {
     internal class Program
     {
+        private static readonly IWebDriver driver = new FirefoxDriver();
+
         private static int Main(string[] args)
         {
             if (args.Length == 0)
@@ -14,7 +16,7 @@ namespace Selenium
                 return -1;
             }
 
-            IWebDriver driver = new FirefoxDriver();
+
             driver.Navigate().GoToUrl("https://spb.hh.ru/account/login");
             var arr =
                 driver.FindElements(By.XPath(".//input[@class='bloko-input' and @type='text' or @type='password']"));
@@ -29,10 +31,9 @@ namespace Selenium
             driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
 
             if (
-                driver.FindElement(
+                IsElementPresent(
                     By.XPath(
-                        ".//div[@class='HH-Resume-UpdateTimer-ToUpdate-Container' and text()='Обновить можно через ']"))
-                    .Displayed)
+                        ".//div[@class='HH-Resume-UpdateTimer-ToUpdate-Container' and text()='Обновить можно через ']")))
             {
                 driver.Close();
                 return -1;
@@ -45,6 +46,19 @@ namespace Selenium
 
 
             return 0;
+        }
+
+        private static bool IsElementPresent(By by)
+        {
+            try
+            {
+                driver.FindElement(by);
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
         }
     }
 }
